@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFinds - Sustainable Second-Hand Marketplace</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-leaf"></i>
+                <span>EcoFinds</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#" class="nav-link" onclick="showScreen('product-feed')">Browse</a>
+                <a href="#" class="nav-link" onclick="showScreen('my-listings')">My Listings</a>
+                <a href="#" class="nav-link" onclick="showScreen('cart')">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+                <a href="#" class="nav-link" onclick="showScreen('user-dashboard')">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="#" class="nav-link" onclick="logout()">Logout</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login/Sign Up Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <i class="fas fa-leaf"></i>
+                    <h1>EcoFinds</h1>
+                    <p>Sustainable Second-Hand Marketplace</p>
+                </div>
+                
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="switchAuthTab('login')">Login</button>
+                    <button class="tab-btn" onclick="switchAuthTab('signup')">Sign Up</button>
+                </div>
+
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Login</button>
+                </form>
+
+                <form id="signup-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-username">Username</label>
+                        <input type="text" id="signup-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm-password">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Feed Screen -->
+    <div id="product-feed" class="screen">
+        <div class="container">
+            <div class="search-section">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search for products...">
+                </div>
+                <div class="category-filters">
+                    <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
+                    <button class="filter-btn" onclick="filterByCategory('electronics')">Electronics</button>
+                    <button class="filter-btn" onclick="filterByCategory('clothing')">Clothing</button>
+                    <button class="filter-btn" onclick="filterByCategory('furniture')">Furniture</button>
+                    <button class="filter-btn" onclick="filterByCategory('books')">Books</button>
+                    <button class="filter-btn" onclick="filterByCategory('sports')">Sports</button>
+                </div>
+            </div>
+
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+
+            <button class="add-product-btn" onclick="showScreen('add-product')">
+                <i class="fas fa-plus"></i>
+                Add New Product
+            </button>
+        </div>
+    </div>
+
+    <!-- Add New Product Screen -->
+    <div id="add-product" class="screen">
+        <div class="container">
+            <div class="screen-header">
+                <button class="back-btn" onclick="showScreen('product-feed')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1>Add New Product</h1>
+            </div>
+
+            <form id="add-product-form" class="product-form">
+                <div class="form-group">
+                    <label for="product-title">Product Title</label>
+                    <input type="text" id="product-title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-category">Category</label>
+                    <select id="product-category" required>
+                        <option value="">Select Category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="furniture">Furniture</option>
+                        <option value="books">Books</option>
+                        <option value="sports">Sports</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-description">Description</label>
+                    <textarea id="product-description" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-price">Price ($)</label>
+                    <input type="number" id="product-price" step="0.01" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Product Image</label>
+                    <div class="image-upload">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('image-input').click()">
+                            <i class="fas fa-plus"></i>
+                            Add Image (Placeholder)
+                        </button>
+                        <input type="file" id="image-input" accept="image/*" style="display: none;">
+                        <div class="image-preview" id="image-preview"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- My Listings Screen -->
+    <div id="my-listings" class="screen">
+        <div class="container">
+            <div class="screen-header">
+                <h1>My Listings</h1>
+                <button class="add-product-btn" onclick="showScreen('add-product')">
+                    <i class="fas fa-plus"></i>
+                    Add New Product
+                </button>
+            </div>
+
+            <div class="my-listings-grid" id="my-listings-grid">
+                <!-- User's listings will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Screen -->
+    <div id="product-detail" class="screen">
+        <div class="container">
+            <div class="screen-header">
+                <button class="back-btn" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1>Product Details</h1>
+            </div>
+
+            <div class="product-detail-content" id="product-detail-content">
+                <!-- Product details will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard Screen -->
+    <div id="user-dashboard" class="screen">
+        <div class="container">
+            <div class="screen-header">
+                <h1>User Dashboard</h1>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="profile-section">
+                    <div class="profile-image">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h2 id="user-name">Username</h2>
+                </div>
+
+                <form id="profile-form" class="profile-form">
+                    <div class="form-group">
+                        <label for="profile-username">Username</label>
+                        <input type="text" id="profile-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">Email</label>
+                        <input type="email" id="profile-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-phone">Phone</label>
+                        <input type="tel" id="profile-phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-address">Address</label>
+                        <textarea id="profile-address" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="update-btn">Update Profile</button>
+                </form>
+
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-box"></i>
+                        <h3 id="total-listings">0</h3>
+                        <p>Total Listings</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3 id="total-purchases">0</h3>
+                        <p>Total Purchases</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-actions">
+                    <button class="action-btn" onclick="showScreen('previous-purchases')">
+                        <i class="fas fa-history"></i>
+                        View Purchase History
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Screen -->
+    <div id="cart" class="screen">
+        <div class="container">
+            <div class="screen-header">
+                <h1>Shopping Cart</h1>
+            </div>
+
+            <div class="cart-content" id="cart-content">
+                <!-- Cart items will be dynamically loaded here -->
+            </div>
+
+            <div class="cart-summary" id="cart-summary">
+                <div class="total-section">
+                    <h3>Total: $<span id="cart-total">0.00</span></h3>
+                    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Previous Purchases Screen -->
+    <div id="previous-purchases" class="screen">
+        <div class="container">
+            <div class="screen-header">
+                <button class="back-btn" onclick="showScreen('user-dashboard')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1>Purchase History</h1>
+            </div>
+
+            <div class="purchases-list" id="purchases-list">
+                <!-- Purchase history will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
